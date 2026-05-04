@@ -1,40 +1,63 @@
-function HomePage({ onNavigate }) {
+import Button from "../components/common/Button.jsx";
+
+function HomePage() {
   return (
     <section className="home-page">
-      <div className="hero">
-        <div className="hero-content">
-          <p className="eyebrow">Interior marketplace starter</p>
-          <h1>Smart Interior</h1>
-          <p className="hero-text">
-            Discover clean, practical furniture ideas for modern homes. This
-            starter frontend is ready to grow into a full interior platform.
-          </p>
-          <button className="primary-button" onClick={() => onNavigate("products")}>
-            Explore Products
-          </button>
+      <section className="hero">
+        <div className="hero-inner">
+          <div className="hero-copy">
+            <p className="eyebrow">Modern interior platform</p>
+            <h1>Design smarter spaces with premium interior products.</h1>
+            <p className="hero-text">
+              Explore curated furniture, future auction flows, and AI-powered
+              product suggestions from one clean platform.
+            </p>
+            <Button to="/products">Explore Products</Button>
+          </div>
+
+          <div className="hero-panel" aria-label="Interior product preview">
+            <span className="hero-panel-label">Featured setup</span>
+            <strong>Warm Wood Living Room</strong>
+            <p>6 curated products ready for a modern apartment concept.</p>
+          </div>
         </div>
-      </div>
+      </section>
 
       <section className="section">
         <div className="section-header">
-          <p className="eyebrow">Future modules</p>
-          <h2>Built for simple expansion</h2>
+          <p className="eyebrow">Platform modules</p>
+          <h2>Designed for the next version</h2>
         </div>
 
         <div className="feature-grid">
-          <article className="feature-item">
-            <h3>Interior Marketplace</h3>
-            <p>Browse furniture products with categories, prices, and details.</p>
+          <article className="feature-card">
+            <span className="feature-number">01</span>
+            <h3>Curated Interior Products</h3>
+            <p>Organize furniture by category, price, room style, and use case.</p>
           </article>
-          <article className="feature-item">
-            <h3>Auction System</h3>
-            <p>Add bidding flows later for selected furniture and decor items.</p>
+          <article className="feature-card">
+            <span className="feature-number">02</span>
+            <h3>Smart Auction Experience</h3>
+            <p>Prepare a future bidding journey for selected premium pieces.</p>
           </article>
-          <article className="feature-item">
-            <h3>AI Recommendation</h3>
-            <p>Suggest products based on style, room type, and user behavior.</p>
+          <article className="feature-card">
+            <span className="feature-number">03</span>
+            <h3>AI-Powered Suggestions</h3>
+            <p>Recommend products based on rooms, taste, and user behavior.</p>
           </article>
         </div>
+      </section>
+
+      <section className="why-section">
+        <div>
+          <p className="eyebrow">Why Smart Interior?</p>
+          <h2>Simple enough to learn, structured enough to grow.</h2>
+        </div>
+        <p>
+          This frontend keeps the first version approachable: React pages,
+          reusable components, mock data, and a service layer that can later
+          connect to real APIs.
+        </p>
       </section>
     </section>
   );

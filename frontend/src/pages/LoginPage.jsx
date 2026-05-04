@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "../components/common/Button.jsx";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
@@ -7,16 +8,19 @@ function LoginPage() {
   function handleSubmit(event) {
     event.preventDefault();
 
-    // Demo only: replace this with backend login later.
+    // Demo only: replace this with backend authentication later.
     console.log("Login submitted:", { username, password });
     alert(`Demo login submitted for: ${username || "unknown user"}`);
   }
 
   return (
-    <section className="page-section login-page">
+    <section className="login-page">
       <form className="login-panel" onSubmit={handleSubmit}>
         <p className="eyebrow">Demo access</p>
-        <h1>Login</h1>
+        <h1>Welcome back</h1>
+        <p className="login-subtitle">
+          Sign in with any username and password to test the frontend flow.
+        </p>
 
         <label htmlFor="username">Username</label>
         <input
@@ -36,9 +40,9 @@ function LoginPage() {
           placeholder="Enter password"
         />
 
-        <button className="primary-button full-width" type="submit">
+        <Button className="full-width" type="submit">
           Login
-        </button>
+        </Button>
       </form>
     </section>
   );

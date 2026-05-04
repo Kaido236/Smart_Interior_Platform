@@ -6,5 +6,7 @@ export function getProducts() {
 }
 
 export function getProductById(productId) {
-  return mockProducts.find((product) => product.id === productId);
+  const id = Number(productId);
+
+  return mockProducts.find((product) => product.id === id);
 }

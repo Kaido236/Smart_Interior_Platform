@@ -1,55 +1,25 @@
-import { useState } from "react";
-import Navbar from "./components/Navbar.jsx";
-import Footer from "./components/Footer.jsx";
+import { Route, Routes } from "react-router-dom";
+import Navbar from "./components/layout/Navbar.jsx";
+import Footer from "./components/layout/Footer.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import ProductsPage from "./pages/ProductsPage.jsx";
 import ProductDetailPage from "./pages/ProductDetailPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function App() {
-  const [currentPage, setCurrentPage] = useState("home");
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  function handleNavigate(page) {
-    setCurrentPage(page);
-    setSelectedProduct(null);
-  }
-
-  function handleSelectProduct(product) {
-    setSelectedProduct(product);
-    setCurrentPage("productDetail");
-  }
-
-  function handleBackToProducts() {
-    setSelectedProduct(null);
-    setCurrentPage("products");
-  }
-
-  function renderPage() {
-    if (currentPage === "products") {
-      return <ProductsPage onSelectProduct={handleSelectProduct} />;
-    }
-
-    if (currentPage === "productDetail") {
-      return (
-        <ProductDetailPage
-          product={selectedProduct}
-          onBack={handleBackToProducts}
-        />
-      );
-    }
-
-    if (currentPage === "login") {
-      return <LoginPage />;
-    }
-
-    return <HomePage onNavigate={handleNavigate} />;
-  }
-
   return (
     <div className="app">
-      <Navbar currentPage={currentPage} onNavigate={handleNavigate} />
-      <main>{renderPage()}</main>
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<ProductDetailPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </main>
       <Footer />
     </div>
   );
