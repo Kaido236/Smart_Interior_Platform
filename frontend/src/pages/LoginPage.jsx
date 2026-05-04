@@ -1,25 +1,37 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/common/Button.jsx";
 
-function LoginPage() {
+function LoginPage({ user, onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
+    const trimmedUsername = username.trim();
+
+    if (!trimmedUsername) {
+      alert("Please enter a username.");
+      return;
+    }
 
     // Demo only: replace this with backend authentication later.
-    console.log("Login submitted:", { username, password });
-    alert(`Demo login submitted for: ${username || "unknown user"}`);
+    console.log("Login submitted:", { username: trimmedUsername, password });
+    onLogin(trimmedUsername);
+    alert(`Demo login submitted for: ${trimmedUsername}`);
+    navigate("/");
   }
 
   return (
     <section className="login-page">
       <form className="login-panel" onSubmit={handleSubmit}>
         <p className="eyebrow">Demo access</p>
-        <h1>Welcome back</h1>
+        <h1>{user ? "You are signed in" : "Welcome back"}</h1>
         <p className="login-subtitle">
-          Sign in with any username and password to test the frontend flow.
+          {user
+            ? `Current mock user: ${user.displayName || user.username}`
+            : "Sign in with any username and password to test the frontend flow."}
         </p>
 
         <label htmlFor="username">Username</label>
