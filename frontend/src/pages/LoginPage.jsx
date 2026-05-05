@@ -1,14 +1,16 @@
 import { useLocation } from "react-router-dom";
+import AuthLayout from "../components/auth/AuthLayout.jsx";
 import AuthForm from "../components/auth/AuthForm.jsx";
 
-function LoginPage({ user, onLogin }) {
+function LoginPage({ onLogin }) {
   const location = useLocation();
   const fromHero = location.state?.fromHero === true;
+  const returnTo = location.state?.from?.pathname || location.state?.returnTo || "/";
 
   return (
-    <section className="login-page">
-      <AuthForm user={user} onLogin={onLogin} fromHero={fromHero} />
-    </section>
+    <AuthLayout>
+      <AuthForm onLogin={onLogin} fromHero={fromHero} returnTo={returnTo} />
+    </AuthLayout>
   );
 }
 

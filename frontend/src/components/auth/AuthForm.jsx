@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "../common/Button.jsx";
+import ForgotPasswordForm from "./ForgotPasswordForm.jsx";
+import LoginForm from "./LoginForm.jsx";
+import RegisterForm from "./RegisterForm.jsx";
 
-function AuthForm({ user, onLogin, fromHero }) {
+function AuthForm({ onLogin, fromHero, returnTo = "/" }) {
   const [authMode, setAuthMode] = useState("login");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -15,26 +17,20 @@ function AuthForm({ user, onLogin, fromHero }) {
   const emailInputRef = useRef(null);
   const navigate = useNavigate();
 
-  const isLogin = authMode === "login";
-  const isRegister = authMode === "register";
-  const isForgot = authMode === "forgot";
-
   useEffect(() => {
-    if (!fromHero) {
-      return;
-    }
-
     const focusTimer = setTimeout(() => {
-      if (isForgot) {
+      if (authMode === "forgot") {
         emailInputRef.current?.focus();
         return;
       }
 
-      usernameInputRef.current?.focus();
+      if (fromHero || authMode !== "login") {
+        usernameInputRef.current?.focus();
+      }
     }, 120);
 
     return () => clearTimeout(focusTimer);
-  }, [fromHero, isForgot]);
+  }, [authMode, fromHero]);
 
   function clearFeedback() {
     setError("");
@@ -62,34 +58,53 @@ function AuthForm({ user, onLogin, fromHero }) {
     }, delay);
   }
 
-  function handleLoginSubmit() {
+  function getSafeReturnPath() {
+    if (!returnTo || returnTo === "/login") {
+      return "/";
+    }
+
+    return returnTo;
+  }
+
+  function handleLoginSubmit(event) {
+    event.preventDefault();
+
+    if (loading) {
+      return;
+    }
+
     runWithDelay(() => {
       const trimmedUsername = username.trim();
 
       if (!trimmedUsername || !password) {
-        setError("Vui lòng nhập đầy đủ thông tin");
+        setError("Vui lòng nhập đầy đủ thông tin.");
         return;
       }
 
       console.log("Mock login:", { username: trimmedUsername });
       onLogin(trimmedUsername);
-      setSuccess("Đăng nhập thành công");
-      return "/";
+      return getSafeReturnPath();
     });
   }
 
-  function handleRegisterSubmit() {
+  function handleRegisterSubmit(event) {
+    event.preventDefault();
+
+    if (loading) {
+      return;
+    }
+
     runWithDelay(() => {
       const trimmedUsername = username.trim();
       const trimmedEmail = email.trim();
 
       if (!trimmedUsername || !trimmedEmail || !password) {
-        setError("Vui lòng nhập đầy đủ thông tin đăng ký");
+        setError("Vui lòng nhập đầy đủ thông tin đăng ký.");
         return;
       }
 
       if (password !== confirmPassword) {
-        setError("Mật khẩu xác nhận không khớp");
+        setError("Mật khẩu xác nhận không khớp.");
         return;
       }
 
@@ -97,200 +112,92 @@ function AuthForm({ user, onLogin, fromHero }) {
         username: trimmedUsername,
         email: trimmedEmail,
       });
+      setUsername(trimmedUsername);
       setAuthMode("login");
       setPassword("");
       setConfirmPassword("");
-      setSuccess("Đăng ký thành công, vui lòng đăng nhập");
+      setSuccess("Tạo tài khoản thành công. Vui lòng đăng nhập.");
     });
   }
 
-  function handleForgotSubmit() {
-    runWithDelay(() => {
-      if (!email.trim()) {
-        setError("Vui lòng nhập email");
-        return;
-      }
-
-      console.log("Mock forgot password:", { email: email.trim() });
-      setSuccess("Nếu email tồn tại, hướng dẫn sẽ được gửi");
-    }, 1000);
-  }
-
-  function handleSubmit(event) {
+  function handleForgotSubmit(event) {
     event.preventDefault();
 
     if (loading) {
       return;
     }
 
-    if (isLogin) {
-      handleLoginSubmit();
-      return;
-    }
+    runWithDelay(() => {
+      if (!email.trim()) {
+        setError("Vui lòng nhập email.");
+        return;
+      }
 
-    if (isRegister) {
-      handleRegisterSubmit();
-      return;
-    }
-
-    handleForgotSubmit();
+      console.log("Mock forgot password:", { email: email.trim() });
+      setSuccess("Nếu email tồn tại, hướng dẫn sẽ được gửi đến bạn.");
+    });
   }
 
-  function getSubmitText() {
-    if (loading && isLogin) {
-      return "Đang đăng nhập...";
+  function renderCurrentForm() {
+    if (authMode === "register") {
+      return (
+        <RegisterForm
+          username={username}
+          email={email}
+          password={password}
+          confirmPassword={confirmPassword}
+          loading={loading}
+          error={error}
+          success={success}
+          usernameInputRef={usernameInputRef}
+          onUsernameChange={setUsername}
+          onEmailChange={setEmail}
+          onPasswordChange={setPassword}
+          onConfirmPasswordChange={setConfirmPassword}
+          onSubmit={handleRegisterSubmit}
+          onSwitchMode={switchMode}
+        />
+      );
     }
 
-    if (loading && isRegister) {
-      return "Đang đăng ký...";
+    if (authMode === "forgot") {
+      return (
+        <ForgotPasswordForm
+          email={email}
+          loading={loading}
+          error={error}
+          success={success}
+          emailInputRef={emailInputRef}
+          onEmailChange={setEmail}
+          onSubmit={handleForgotSubmit}
+          onSwitchMode={switchMode}
+        />
+      );
     }
 
-    if (loading && isForgot) {
-      return "Đang gửi...";
-    }
-
-    if (isRegister) {
-      return "Đăng ký";
-    }
-
-    if (isForgot) {
-      return "Gửi hướng dẫn";
-    }
-
-    return "Đăng nhập";
+    return (
+      <LoginForm
+        username={username}
+        password={password}
+        loading={loading}
+        error={error}
+        success={success}
+        usernameInputRef={usernameInputRef}
+        onUsernameChange={setUsername}
+        onPasswordChange={setPassword}
+        onSubmit={handleLoginSubmit}
+        onSwitchMode={switchMode}
+      />
+    );
   }
 
   return (
-    <form
+    <div
       className="login-panel auth-card fade-in"
       style={{ animationDelay: fromHero ? "0.08s" : "0s" }}
-      onSubmit={handleSubmit}
     >
-      <div className="auth-card-header">
-        <p className="eyebrow">Smart Interior</p>
-        <h1>
-          {isLogin && (user ? "Bạn đã đăng nhập" : "Đăng nhập")}
-          {isRegister && "Tạo tài khoản"}
-          {isForgot && "Quên mật khẩu"}
-        </h1>
-        <p className="login-subtitle">
-          {isLogin &&
-            (user
-              ? `Tài khoản hiện tại: ${user.displayName || user.username}`
-              : "Chào mừng bạn quay lại không gian nội thất của mình.")}
-          {isRegister && "Tạo tài khoản để lưu ý tưởng và tiếp tục hành trình thiết kế."}
-          {isForgot && "Nhập email để nhận hướng dẫn đặt lại mật khẩu."}
-        </p>
-      </div>
-
-      <div className="auth-mode-tabs" aria-label="Auth mode">
-        <button
-          className={isLogin ? "auth-mode-tab active" : "auth-mode-tab"}
-          type="button"
-          onClick={() => switchMode("login")}
-          disabled={loading}
-        >
-          Đăng nhập
-        </button>
-        <button
-          className={isRegister ? "auth-mode-tab active" : "auth-mode-tab"}
-          type="button"
-          onClick={() => switchMode("register")}
-          disabled={loading}
-        >
-          Đăng ký
-        </button>
-        <button
-          className={isForgot ? "auth-mode-tab active" : "auth-mode-tab"}
-          type="button"
-          onClick={() => switchMode("forgot")}
-          disabled={loading}
-        >
-          Quên mật khẩu
-        </button>
-      </div>
-
-      <div key={authMode} className="auth-fields fade-in">
-        {!isForgot && (
-          <div className="form-group">
-            <label htmlFor="username">Tên đăng nhập</label>
-            <input
-              id="username"
-              ref={usernameInputRef}
-              type="text"
-              value={username}
-              onChange={(event) => setUsername(event.target.value)}
-              placeholder="Nhập tên đăng nhập"
-            />
-          </div>
-        )}
-
-        {(isRegister || isForgot) && (
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              ref={emailInputRef}
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              placeholder="Nhập email"
-            />
-          </div>
-        )}
-
-        {!isForgot && (
-          <div className="form-group">
-            <label htmlFor="password">Mật khẩu</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              placeholder="Nhập mật khẩu"
-            />
-          </div>
-        )}
-
-        {isRegister && (
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
-            <input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(event) => setConfirmPassword(event.target.value)}
-              placeholder="Nhập lại mật khẩu"
-            />
-          </div>
-        )}
-      </div>
-
-      {error && <p className="error-text auth-feedback">{error}</p>}
-      {success && <p className="success-text auth-feedback">{success}</p>}
-
-      <Button className="full-width" type="submit" disabled={loading}>
-        {getSubmitText()}
-      </Button>
-
-      <div className="auth-switch">
-        {isLogin && (
-          <>
-            <button type="button" onClick={() => switchMode("register")} disabled={loading}>
-              Chưa có tài khoản? Đăng ký
-            </button>
-            <button type="button" onClick={() => switchMode("forgot")} disabled={loading}>
-              Quên mật khẩu?
-            </button>
-          </>
-        )}
-        {!isLogin && (
-          <button type="button" onClick={() => switchMode("login")} disabled={loading}>
-            Đã có tài khoản? Đăng nhập
-          </button>
-        )}
-      </div>
-    </form>
+      {renderCurrentForm()}
+    </div>
   );
 }
 
