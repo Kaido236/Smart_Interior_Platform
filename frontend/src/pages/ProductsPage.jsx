@@ -24,8 +24,8 @@ function ProductsPage() {
       </div>
 
       <div className="products-grid">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {products.map((product, index) => (
+          <ProductCard key={product.id} product={product} animationDelay={`${index * 0.05}s`} />
         ))}
       </div>
     </section>

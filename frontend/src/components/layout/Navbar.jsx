@@ -58,14 +58,9 @@ function Navbar({ user, onLogout }) {
               </button>
             </div>
           ) : (
-            <div className="nav-auth-links">
-              <NavLink className="auth-link auth-login" to="/login">
-                Đăng nhập
-              </NavLink>
-              <NavLink className="auth-link auth-register" to="/register">
-                Đăng ký
-              </NavLink>
-            </div>
+            <NavLink className="auth-link auth-login" to="/login">
+              Đăng nhập
+            </NavLink>
           )}
           <button className="language-button" type="button">
             EN

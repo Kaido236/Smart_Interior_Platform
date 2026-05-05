@@ -8,7 +8,6 @@ import ProductDetailPage from "./pages/ProductDetailPage.jsx";
 import CommunityPage from "./pages/CommunityPage.jsx";
 import BlogPage from "./pages/BlogPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-import RegisterPage from "./pages/RegisterPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function App() {
@@ -49,7 +48,6 @@ function App() {
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/login" element={<LoginPage user={user} onLogin={handleLogin} />} />
-          <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>

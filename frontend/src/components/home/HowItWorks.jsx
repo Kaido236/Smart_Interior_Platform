@@ -18,7 +18,7 @@ const steps = [
 
 function HowItWorks() {
   return (
-    <section className="landing-section">
+    <section className="landing-section fade-in">
       <div className="landing-section-header">
         <p className="eyebrow">How It Works</p>
         <h2>A simple path from idea to curated interior setup.</h2>

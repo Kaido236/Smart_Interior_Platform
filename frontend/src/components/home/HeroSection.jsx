@@ -1,6 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../common/Button.jsx";
 
 function HeroSection() {
+  const navigate = useNavigate();
+
+  function handleStartClick() {
+    navigate("/login", { state: { fromHero: true } });
+  }
+
   return (
     <section className="landing-hero">
       <div className="landing-hero-overlay" />
@@ -11,7 +18,7 @@ function HeroSection() {
           Online Interior Design
           <span>for Modern Living</span>
         </h1>
-        <Button to="/products" className="hero-cta">
+        <Button className="hero-cta" onClick={handleStartClick}>
           START MY TRANSFORMATION
         </Button>
       </div>
