@@ -57,8 +57,8 @@ img {
 
 .fade-in {
   opacity: 0;
-  transform: translateY(10px);
-  animation: fadeIn 0.4s ease forwards;
+  transform: translateY(8px);
+  animation: fadeIn 0.3s ease forwards;
 }
 
 @keyframes fadeIn {
@@ -310,6 +310,7 @@ main {
 
 .button:hover {
   transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
 }
 
 .button-primary {
@@ -689,6 +690,10 @@ main {
   padding: 72px 24px;
 }
 
+.login-page {
+  background: linear-gradient(135deg, #f7f1e8, #efe6d8);
+}
+
 .login-panel,
 .not-found-panel {
   width: min(460px, 100%);
@@ -696,61 +701,108 @@ main {
 }
 
 .auth-card {
-  width: min(500px, 100%);
+  width: min(420px, 100%);
+}
+
+.login-panel.auth-card {
+  padding: 32px 28px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card-header {
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.auth-card-header .eyebrow {
+  margin-bottom: 10px;
+}
+
+.auth-card-header h1 {
+  margin-bottom: 12px;
+}
+
+.login-subtitle {
+  margin: 0;
+  font-size: 0.96rem;
 }
 
 .auth-mode-tabs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin: 24px 0 10px;
-  padding: 6px;
-  background: var(--color-soft);
-  border: 1px solid var(--color-border);
+  gap: 4px;
+  margin: 0 0 24px;
+  padding: 4px;
+  background: #efe6d8;
+  border: 1px solid rgba(0, 0, 0, 0.04);
   border-radius: 999px;
 }
 
 .auth-mode-tab {
-  min-height: 38px;
-  padding: 0 10px;
+  min-height: 36px;
+  padding: 0 8px;
   color: var(--color-muted);
   background: transparent;
   border: 0;
   border-radius: 999px;
-  font-weight: 900;
-  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  font-size: 0.82rem;
+  font-weight: 600;
+  opacity: 0.7;
+  transition: background 160ms ease, color 160ms ease, opacity 160ms ease, transform 160ms ease;
 }
 
 .auth-mode-tab:hover {
   color: var(--color-charcoal);
+  opacity: 1;
 }
 
 .auth-mode-tab.active {
-  color: var(--color-charcoal);
+  color: #000000;
   background: var(--color-gold);
-  box-shadow: 0 8px 18px rgba(31, 27, 23, 0.12);
+  opacity: 1;
+  box-shadow: 0 8px 18px rgba(31, 27, 23, 0.1);
+}
+
+.auth-fields {
+  animation-duration: 0.3s;
+}
+
+.form-group {
+  margin-bottom: 20px;
 }
 
 .login-panel label {
   display: block;
-  margin: 18px 0 8px;
+  margin-bottom: 6px;
   color: var(--color-charcoal);
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .login-panel input {
   width: 100%;
-  min-height: 48px;
+  height: 44px;
   padding: 0 14px;
   color: var(--color-text);
   background: var(--color-input);
   border: 1px solid var(--color-border);
   border-radius: 12px;
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.login-panel input:focus {
+  background: var(--color-surface);
+  border-color: rgba(159, 138, 79, 0.55);
+  box-shadow: 0 0 0 3px rgba(214, 195, 143, 0.22);
 }
 
 .full-width {
   width: 100%;
-  margin-top: 26px;
+  margin-top: 22px;
 }
 
 .auth-switch {
@@ -758,7 +810,7 @@ main {
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px 18px;
-  margin-top: 20px;
+  margin-top: 22px;
 }
 
 .auth-switch button {
@@ -776,19 +828,19 @@ main {
 }
 
 .auth-feedback {
-  margin-bottom: -10px;
+  margin-bottom: -6px;
 }
 
 .error-text {
   color: #d9534f;
   font-size: 13px;
-  margin-top: 14px;
+  margin-top: 4px;
 }
 
 .success-text {
   color: #4caf50;
   font-size: 13px;
-  margin-top: 14px;
+  margin-top: 4px;
 }
 
 .not-found-panel,
@@ -961,8 +1013,13 @@ main {
   }
 
   .auth-mode-tabs {
-    grid-template-columns: 1fr;
-    border-radius: 18px;
+    grid-template-columns: repeat(3, 1fr);
+    border-radius: 999px;
+  }
+
+  .auth-mode-tab {
+    padding: 0 6px;
+    font-size: 0.74rem;
   }
 
   .steps-grid,

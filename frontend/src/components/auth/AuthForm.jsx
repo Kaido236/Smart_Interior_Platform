@@ -166,20 +166,22 @@ function AuthForm({ user, onLogin, fromHero }) {
       style={{ animationDelay: fromHero ? "0.08s" : "0s" }}
       onSubmit={handleSubmit}
     >
-      <p className="eyebrow">Demo access</p>
-      <h1>
-        {isLogin && (user ? "Bạn đã đăng nhập" : "Đăng nhập")}
-        {isRegister && "Đăng ký"}
-        {isForgot && "Quên mật khẩu"}
-      </h1>
-      <p className="login-subtitle">
-        {isLogin &&
-          (user
-            ? `Tài khoản mock hiện tại: ${user.displayName || user.username}`
-            : "Đăng nhập bằng username và password bất kỳ để thử luồng frontend.")}
-        {isRegister && "Tạo tài khoản mock để chuẩn bị cho luồng xác thực thật sau này."}
-        {isForgot && "Nhập email để nhận hướng dẫn đặt lại mật khẩu trong phiên bản thật."}
-      </p>
+      <div className="auth-card-header">
+        <p className="eyebrow">Smart Interior</p>
+        <h1>
+          {isLogin && (user ? "Bạn đã đăng nhập" : "Đăng nhập")}
+          {isRegister && "Tạo tài khoản"}
+          {isForgot && "Quên mật khẩu"}
+        </h1>
+        <p className="login-subtitle">
+          {isLogin &&
+            (user
+              ? `Tài khoản hiện tại: ${user.displayName || user.username}`
+              : "Chào mừng bạn quay lại không gian nội thất của mình.")}
+          {isRegister && "Tạo tài khoản để lưu ý tưởng và tiếp tục hành trình thiết kế."}
+          {isForgot && "Nhập email để nhận hướng dẫn đặt lại mật khẩu."}
+        </p>
+      </div>
 
       <div className="auth-mode-tabs" aria-label="Auth mode">
         <button
@@ -208,59 +210,61 @@ function AuthForm({ user, onLogin, fromHero }) {
         </button>
       </div>
 
-      {!isForgot && (
-        <>
-          <label htmlFor="username">Username</label>
-          <input
-            id="username"
-            ref={usernameInputRef}
-            type="text"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
-            placeholder="Nhập username"
-          />
-        </>
-      )}
+      <div key={authMode} className="auth-fields fade-in">
+        {!isForgot && (
+          <div className="form-group">
+            <label htmlFor="username">Tên đăng nhập</label>
+            <input
+              id="username"
+              ref={usernameInputRef}
+              type="text"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              placeholder="Nhập tên đăng nhập"
+            />
+          </div>
+        )}
 
-      {(isRegister || isForgot) && (
-        <>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            ref={emailInputRef}
-            type="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="Nhập email"
-          />
-        </>
-      )}
+        {(isRegister || isForgot) && (
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              ref={emailInputRef}
+              type="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="Nhập email"
+            />
+          </div>
+        )}
 
-      {!isForgot && (
-        <>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            placeholder="Nhập password"
-          />
-        </>
-      )}
+        {!isForgot && (
+          <div className="form-group">
+            <label htmlFor="password">Mật khẩu</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="Nhập mật khẩu"
+            />
+          </div>
+        )}
 
-      {isRegister && (
-        <>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            id="confirmPassword"
-            type="password"
-            value={confirmPassword}
-            onChange={(event) => setConfirmPassword(event.target.value)}
-            placeholder="Nhập lại password"
-          />
-        </>
-      )}
+        {isRegister && (
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={confirmPassword}
+              onChange={(event) => setConfirmPassword(event.target.value)}
+              placeholder="Nhập lại mật khẩu"
+            />
+          </div>
+        )}
+      </div>
 
       {error && <p className="error-text auth-feedback">{error}</p>}
       {success && <p className="success-text auth-feedback">{success}</p>}
