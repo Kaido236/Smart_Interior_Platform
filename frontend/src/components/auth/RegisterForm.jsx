@@ -26,49 +26,51 @@ function RegisterForm({
         </p>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="registerUsername">Tên đăng nhập</label>
-        <input
-          id="registerUsername"
-          ref={usernameInputRef}
-          type="text"
-          value={username}
-          onChange={(event) => onUsernameChange(event.target.value)}
-          placeholder="Nhập tên đăng nhập"
-        />
-      </div>
+      <div className="register-form-grid">
+        <div className="form-group">
+          <label htmlFor="registerUsername">Tên đăng nhập</label>
+          <input
+            id="registerUsername"
+            ref={usernameInputRef}
+            type="text"
+            value={username}
+            onChange={(event) => onUsernameChange(event.target.value)}
+            placeholder="Nhập tên đăng nhập"
+          />
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="registerEmail">Email</label>
-        <input
-          id="registerEmail"
-          type="email"
-          value={email}
-          onChange={(event) => onEmailChange(event.target.value)}
-          placeholder="Nhập email"
-        />
-      </div>
+        <div className="form-group">
+          <label htmlFor="registerEmail">Email</label>
+          <input
+            id="registerEmail"
+            type="email"
+            value={email}
+            onChange={(event) => onEmailChange(event.target.value)}
+            placeholder="Nhập email"
+          />
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="registerPassword">Mật khẩu</label>
-        <input
-          id="registerPassword"
-          type="password"
-          value={password}
-          onChange={(event) => onPasswordChange(event.target.value)}
-          placeholder="Nhập mật khẩu"
-        />
-      </div>
+        <div className="form-group">
+          <label htmlFor="registerPassword">Mật khẩu</label>
+          <input
+            id="registerPassword"
+            type="password"
+            value={password}
+            onChange={(event) => onPasswordChange(event.target.value)}
+            placeholder="Nhập mật khẩu"
+          />
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          value={confirmPassword}
-          onChange={(event) => onConfirmPasswordChange(event.target.value)}
-          placeholder="Nhập lại mật khẩu"
-        />
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
+          <input
+            id="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={(event) => onConfirmPasswordChange(event.target.value)}
+            placeholder="Nhập lại mật khẩu"
+          />
+        </div>
       </div>
 
       {error && <p className="error-text auth-feedback">{error}</p>}

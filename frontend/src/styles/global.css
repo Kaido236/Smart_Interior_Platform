@@ -700,12 +700,24 @@ main {
   padding: 40px 20px;
 }
 
+.auth-layout-focused .auth-container {
+  justify-content: center;
+}
+
 .auth-left {
   width: 420px;
   max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.auth-layout-register .auth-left {
+  width: 760px;
+}
+
+.auth-layout-forgot .auth-left {
+  width: 420px;
 }
 
 .auth-right {
@@ -743,6 +755,10 @@ main {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
 }
 
+.login-panel.auth-card-register {
+  padding: 34px;
+}
+
 .auth-form-content {
   width: 100%;
   animation-duration: 0.35s;
@@ -768,6 +784,12 @@ main {
 
 .form-group {
   margin-bottom: 20px;
+}
+
+.register-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 20px;
 }
 
 .login-panel label {
@@ -1034,6 +1056,10 @@ main {
     gap: 0;
   }
 
+  .auth-layout-register .auth-container {
+    width: min(760px, 100%);
+  }
+
   .auth-right {
     display: none;
   }
@@ -1106,6 +1132,19 @@ main {
 
   .login-panel.auth-card {
     padding: 28px 22px;
+  }
+
+  .auth-layout-register .auth-left,
+  .auth-layout-forgot .auth-left {
+    width: 100%;
+  }
+
+  .login-panel.auth-card-register {
+    padding: 28px 22px;
+  }
+
+  .register-form-grid {
+    grid-template-columns: 1fr;
   }
 
   .steps-grid,

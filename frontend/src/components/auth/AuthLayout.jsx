@@ -1,12 +1,19 @@
 import AuthVisualPanel from "./AuthVisualPanel.jsx";
 
-function AuthLayout({ children }) {
+function AuthLayout({ children, authMode = "login" }) {
+  const isFocusedMode = authMode === "register" || authMode === "forgot";
+  const layoutClassName = `auth-layout-page auth-layout-${authMode}${
+    isFocusedMode ? " auth-layout-focused" : ""
+  }`;
+
   return (
-    <section className="auth-layout-page">
+    <section className={layoutClassName}>
       <div className="auth-container">
-        <div className="auth-right">
-          <AuthVisualPanel />
-        </div>
+        {!isFocusedMode && (
+          <div className="auth-right">
+            <AuthVisualPanel />
+          </div>
+        )}
         <div className="auth-left">{children}</div>
       </div>
     </section>

@@ -4,8 +4,7 @@ import ForgotPasswordForm from "./ForgotPasswordForm.jsx";
 import LoginForm from "./LoginForm.jsx";
 import RegisterForm from "./RegisterForm.jsx";
 
-function AuthForm({ onLogin, fromHero, returnTo = "/" }) {
-  const [authMode, setAuthMode] = useState("login");
+function AuthForm({ authMode = "login", onAuthModeChange, onLogin, fromHero, returnTo = "/" }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,7 +37,7 @@ function AuthForm({ onLogin, fromHero, returnTo = "/" }) {
   }
 
   function switchMode(mode) {
-    setAuthMode(mode);
+    onAuthModeChange(mode);
     clearFeedback();
     setPassword("");
     setConfirmPassword("");
@@ -113,7 +112,7 @@ function AuthForm({ onLogin, fromHero, returnTo = "/" }) {
         email: trimmedEmail,
       });
       setUsername(trimmedUsername);
-      setAuthMode("login");
+      onAuthModeChange("login");
       setPassword("");
       setConfirmPassword("");
       setSuccess("Tạo tài khoản thành công. Vui lòng đăng nhập.");
@@ -193,7 +192,7 @@ function AuthForm({ onLogin, fromHero, returnTo = "/" }) {
 
   return (
     <div
-      className="login-panel auth-card fade-in"
+      className={`login-panel auth-card auth-card-${authMode} fade-in`}
       style={{ animationDelay: fromHero ? "0.08s" : "0s" }}
     >
       {renderCurrentForm()}
