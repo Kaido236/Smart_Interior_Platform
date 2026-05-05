@@ -1,4 +1,4 @@
-# Smart Interior Platform
+# # Smart Interior Platform
 
 Smart Interior Platform là nền tảng nội thất thông minh, hướng tới việc giúp người dùng khám phá sản phẩm nội thất, xem chi tiết sản phẩm, đăng nhập, và trong các phiên bản sau có thể mở rộng thêm đấu giá, chatbot AI, và gợi ý sản phẩm.
 
