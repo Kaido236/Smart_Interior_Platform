@@ -1,14 +1,12 @@
 SET NAMES utf8mb4;
 
 INSERT INTO users (
-    username,
     email,
     password_hash,
     full_name,
     role,
     status
 ) VALUES (
-    'admin',
     'admin@example.com',
     '$2a$10$placeholder-change-me-before-production',
     'System Admin',
@@ -186,43 +184,43 @@ ON DUPLICATE KEY UPDATE
     status = VALUES(status);
 
 INSERT INTO community_posts (author_id, title, content, post_type, status)
-SELECT admin.user_id,
+SELECT admin.id,
        'Góc phòng khách tối giản của tôi',
        'Mình chọn sofa màu be, bàn trà gỗ và một đèn cây để giữ không gian gọn, sáng và dễ sinh hoạt.',
        'SHOWCASE',
        'VISIBLE'
 FROM users AS admin
-WHERE admin.username = 'admin'
+WHERE admin.email = 'admin@example.com'
   AND NOT EXISTS (
       SELECT 1 FROM community_posts
       WHERE title = 'Góc phòng khách tối giản của tôi'
-        AND author_id = admin.user_id
+        AND author_id = admin.id
   );
 
 INSERT INTO community_posts (author_id, title, content, post_type, status)
-SELECT admin.user_id,
+SELECT admin.id,
        'Nên chọn sofa vải hay sofa da?',
        'Mọi người cho mình xin kinh nghiệm chọn sofa cho nhà có trẻ nhỏ: nên dùng sofa vải hay sofa da?',
        'QUESTION',
        'VISIBLE'
 FROM users AS admin
-WHERE admin.username = 'admin'
+WHERE admin.email = 'admin@example.com'
   AND NOT EXISTS (
       SELECT 1 FROM community_posts
       WHERE title = 'Nên chọn sofa vải hay sofa da?'
-        AND author_id = admin.user_id
+        AND author_id = admin.id
   );
 
 INSERT INTO community_posts (author_id, title, content, post_type, status)
-SELECT admin.user_id,
+SELECT admin.id,
        '5 mẹo decor phòng ngủ nhỏ',
        'Ưu tiên màu sáng, dùng nội thất nhiều ngăn, tận dụng ánh sáng tự nhiên, chọn giường thấp và hạn chế đồ trang trí rườm rà.',
        'TIP',
        'VISIBLE'
 FROM users AS admin
-WHERE admin.username = 'admin'
+WHERE admin.email = 'admin@example.com'
   AND NOT EXISTS (
       SELECT 1 FROM community_posts
       WHERE title = '5 mẹo decor phòng ngủ nhỏ'
-        AND author_id = admin.user_id
+        AND author_id = admin.id
   );
