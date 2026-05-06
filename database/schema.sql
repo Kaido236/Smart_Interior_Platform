@@ -1,18 +1,15 @@
 SET NAMES utf8mb4;
 
 CREATE TABLE IF NOT EXISTS users (
-    user_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
-    full_name VARCHAR(100),
     phone VARCHAR(20),
-    avatar_url VARCHAR(500),
-    role ENUM('CUSTOMER', 'ADMIN') NOT NULL DEFAULT 'CUSTOMER',
-    status ENUM('ACTIVE', 'BANNED', 'INACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    role VARCHAR(30) NOT NULL DEFAULT 'CUSTOMER',
+    status VARCHAR(30) NOT NULL DEFAULT 'ACTIVE',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    UNIQUE KEY uk_users_username (username),
     UNIQUE KEY uk_users_email (email)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -30,7 +27,7 @@ CREATE TABLE IF NOT EXISTS addresses (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     KEY idx_addresses_user_id (user_id),
     CONSTRAINT fk_addresses_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS categories (
@@ -101,7 +98,7 @@ CREATE TABLE IF NOT EXISTS carts (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     UNIQUE KEY uk_carts_user_id (user_id),
     CONSTRAINT fk_carts_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS cart_items (
@@ -141,7 +138,7 @@ CREATE TABLE IF NOT EXISTS orders (
     KEY idx_orders_user_id (user_id),
     KEY idx_orders_address_id (address_id),
     CONSTRAINT fk_orders_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id),
+        FOREIGN KEY (user_id) REFERENCES users(id),
     CONSTRAINT fk_orders_address
         FOREIGN KEY (address_id) REFERENCES addresses(address_id) ON DELETE SET NULL,
     CONSTRAINT chk_orders_total_amount CHECK (total_amount >= 0),
@@ -202,7 +199,7 @@ CREATE TABLE IF NOT EXISTS product_reviews (
     CONSTRAINT fk_product_reviews_product
         FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE,
     CONSTRAINT fk_product_reviews_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_product_reviews_order_item
         FOREIGN KEY (order_item_id) REFERENCES order_items(order_item_id) ON DELETE SET NULL,
     CONSTRAINT chk_product_reviews_rating CHECK (rating BETWEEN 1 AND 5)
@@ -216,7 +213,7 @@ CREATE TABLE IF NOT EXISTS wishlists (
     UNIQUE KEY uk_wishlists_user_product (user_id, product_id),
     KEY idx_wishlists_product_id (product_id),
     CONSTRAINT fk_wishlists_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_wishlists_product
         FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -234,7 +231,7 @@ CREATE TABLE IF NOT EXISTS community_posts (
     KEY idx_community_posts_post_type (post_type),
     KEY idx_community_posts_status (status),
     CONSTRAINT fk_community_posts_author
-        FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE
+        FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS post_images (
@@ -264,7 +261,7 @@ CREATE TABLE IF NOT EXISTS comments (
     CONSTRAINT fk_comments_post
         FOREIGN KEY (post_id) REFERENCES community_posts(post_id) ON DELETE CASCADE,
     CONSTRAINT fk_comments_author
-        FOREIGN KEY (author_id) REFERENCES users(user_id) ON DELETE CASCADE,
+        FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE,
     CONSTRAINT fk_comments_parent_comment
         FOREIGN KEY (parent_comment_id) REFERENCES comments(comment_id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -279,7 +276,7 @@ CREATE TABLE IF NOT EXISTS post_likes (
     CONSTRAINT fk_post_likes_post
         FOREIGN KEY (post_id) REFERENCES community_posts(post_id) ON DELETE CASCADE,
     CONSTRAINT fk_post_likes_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS saved_posts (
@@ -292,5 +289,5 @@ CREATE TABLE IF NOT EXISTS saved_posts (
     CONSTRAINT fk_saved_posts_post
         FOREIGN KEY (post_id) REFERENCES community_posts(post_id) ON DELETE CASCADE,
     CONSTRAINT fk_saved_posts_user
-        FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
