@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-function ProductCard({ product }) {
+function ProductCard({ product, animationDelay = "0s" }) {
   return (
-    <article className="product-card">
+    <article className="product-card fade-in" style={{ animationDelay }}>
       <Link className="product-image-link" to={`/products/${product.id}`}>
         <img src={product.imageUrl} alt={product.name} className="product-image" />
       </Link>

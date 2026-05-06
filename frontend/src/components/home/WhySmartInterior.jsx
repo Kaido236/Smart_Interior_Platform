@@ -15,7 +15,7 @@ const reasons = [
 
 function WhySmartInterior() {
   return (
-    <section className="landing-section why-smart-section" id="blog">
+    <section className="landing-section why-smart-section fade-in" style={{ animationDelay: "0.12s" }}>
       <div className="landing-section-header">
         <p className="eyebrow">Why Smart Interior?</p>
         <h2>Premium interface now, scalable platform later.</h2>

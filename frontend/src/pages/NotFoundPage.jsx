@@ -6,9 +6,7 @@ function NotFoundPage() {
       <div className="not-found-panel">
         <p className="eyebrow">404</p>
         <h1>Page not found</h1>
-        <p>
-          The page you are looking for does not exist in this frontend version.
-        </p>
+        <p>The page you are looking for does not exist in this frontend version.</p>
         <Button to="/">Back to Home</Button>
       </div>
     </section>

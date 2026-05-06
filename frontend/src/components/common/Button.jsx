@@ -1,6 +1,13 @@
 import { Link } from "react-router-dom";
 
-function Button({ children, to, type = "button", variant = "primary", className = "" }) {
+function Button({
+  children,
+  to,
+  type = "button",
+  variant = "primary",
+  className = "",
+  ...props
+}) {
   const classes = `button button-${variant} ${className}`.trim();
 
   if (to) {
@@ -12,7 +19,7 @@ function Button({ children, to, type = "button", variant = "primary", className 
   }
 
   return (
-    <button className={classes} type={type}>
+    <button className={classes} type={type} {...props}>
       {children}
     </button>
   );

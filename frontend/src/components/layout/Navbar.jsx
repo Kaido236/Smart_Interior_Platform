@@ -28,21 +28,15 @@ function Navbar({ user, onLogout }) {
     <header className={isHomePage ? "navbar navbar-overlay" : "navbar navbar-solid"}>
       <div className="nav-content">
         <NavLink className="brand-link" to="/">
-          <span>Smart Interior</span>
+          Smart Interior
         </NavLink>
 
         <nav className="nav-links" aria-label="Main navigation">
-          <NavLink className="nav-link" to="/draft">
-            My Draft
-          </NavLink>
           <NavLink className="nav-link" to="/products">
             Shop
           </NavLink>
-          <NavLink className="nav-link" to="/how-it-works">
-            How It Works
-          </NavLink>
-          <NavLink className="nav-link" to="/portfolio">
-            Portfolio
+          <NavLink className="nav-link" to="/community">
+            Community
           </NavLink>
           <NavLink className="nav-link" to="/blog">
             Blog
@@ -64,8 +58,8 @@ function Navbar({ user, onLogout }) {
               </button>
             </div>
           ) : (
-            <NavLink className="nav-user" to="/login">
-              Login
+            <NavLink className="auth-link auth-login" to="/login">
+              Đăng nhập
             </NavLink>
           )}
           <button className="language-button" type="button">

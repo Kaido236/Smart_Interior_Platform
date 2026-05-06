@@ -40,7 +40,7 @@ function Footer() {
           <span>Premium interior marketplace starter built with React.</span>
         </div>
 
-        <div className="footer-contact">
+        <div>
           <p className="footer-title">Contact</p>
           <ul className="contact-list">
             <li>
@@ -51,9 +51,7 @@ function Footer() {
               <span className="contact-icon">
                 <MailIcon />
               </span>
-              <a href="mailto:hunggialam2306@gmail.com">
-                hunggialam2306@gmail.com
-              </a>
+              <a href="mailto:hunggialam2306@gmail.com">hunggialam2306@gmail.com</a>
             </li>
             <li>
               <span className="contact-icon">
@@ -64,24 +62,14 @@ function Footer() {
           </ul>
         </div>
 
-        <div className="footer-social">
+        <div>
           <p className="footer-title">Social</p>
           <div className="social-links">
-            <a
-              href="https://www.facebook.com/nguyen.huu.hung.685749/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Kaido Facebook"
-            >
+            <a href="https://www.facebook.com/nguyen.huu.hung.685749/" target="_blank" rel="noreferrer">
               <FacebookIcon />
               <span>Facebook</span>
             </a>
-            <a
-              href="https://github.com/Kaido236"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Kaido GitHub"
-            >
+            <a href="https://github.com/Kaido236" target="_blank" rel="noreferrer">
               <GithubIcon />
               <span>GitHub</span>
             </a>

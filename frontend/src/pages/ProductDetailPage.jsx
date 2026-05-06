@@ -11,10 +11,7 @@ function ProductDetailPage() {
       <section className="page-section empty-state">
         <p className="eyebrow">Product not found</p>
         <h1>We could not find this product.</h1>
-        <p>
-          The product may have been removed from the mock catalog or the URL is
-          not correct.
-        </p>
+        <p>The product may have been removed or the URL is not correct.</p>
         <Button to="/products">Back to Products</Button>
       </section>
     );
@@ -48,10 +45,7 @@ function ProductDetailPage() {
 
           <div className="detail-note">
             <strong>Starter note</strong>
-            <p>
-              This page gets product data from the mock service. Later it can
-              load real product details from the backend.
-            </p>
+            <p>This page gets product data from the mock service.</p>
           </div>
         </div>
       </div>
