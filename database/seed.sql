@@ -18,6 +18,8 @@ ON DUPLICATE KEY UPDATE
     status = 'ACTIVE',
     updated_at = CURRENT_TIMESTAMP;
 
+SET @admin_id = (SELECT id FROM users WHERE email = 'admin@example.com');
+
 INSERT INTO categories (name, slug, description, parent_id, status) VALUES
 ('Phòng khách', 'phong-khach', 'Danh mục nội thất dành cho phòng khách.', NULL, 'ACTIVE'),
 ('Phòng ngủ', 'phong-ngu', 'Danh mục nội thất dành cho phòng ngủ.', NULL, 'ACTIVE'),
@@ -52,6 +54,7 @@ SET @den_trang_tri_id = (SELECT category_id FROM categories WHERE slug = 'den-tr
 SET @tu_quan_ao_id = (SELECT category_id FROM categories WHERE slug = 'tu-quan-ao');
 
 INSERT INTO products (
+    seller_id,
     category_id,
     name,
     slug,
@@ -63,14 +66,17 @@ INSERT INTO products (
     material,
     color,
     style,
+    room_type,
     width,
     height,
     depth,
+    image_url,
     weight,
     brand,
     status
 ) VALUES
 (
+    @admin_id,
     @sofa_id,
     'Sofa vải màu be',
     'sofa-vai-mau-be',
@@ -82,14 +88,17 @@ INSERT INTO products (
     'Vải bố, khung gỗ',
     'Be',
     'Modern',
+    'Living Room',
     210.00,
     85.00,
     90.00,
+    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=80',
     45.00,
     'Smart Interior',
     'ACTIVE'
 ),
 (
+    @admin_id,
     @ban_tra_id,
     'Bàn trà gỗ óc chó',
     'ban-tra-go-oc-cho',
@@ -101,14 +110,17 @@ INSERT INTO products (
     'Gỗ óc chó',
     'Nâu',
     'Minimalist',
+    'Living Room',
     110.00,
     42.00,
     60.00,
+    'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=900&q=80',
     25.00,
     'Smart Interior',
     'ACTIVE'
 ),
 (
+    @admin_id,
     @giuong_id,
     'Giường ngủ phong cách tối giản',
     'giuong-ngu-phong-cach-toi-gian',
@@ -120,14 +132,17 @@ INSERT INTO products (
     'Gỗ công nghiệp MDF',
     'Trắng',
     'Minimalist',
+    'Bedroom',
     180.00,
     95.00,
     200.00,
+    'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80',
     65.00,
     'Smart Interior',
     'ACTIVE'
 ),
 (
+    @admin_id,
     @den_trang_tri_id,
     'Đèn cây phòng khách',
     'den-cay-phong-khach',
@@ -139,14 +154,17 @@ INSERT INTO products (
     'Kim loại, vải',
     'Đen',
     'Scandinavian',
+    'Living Room',
     35.00,
     160.00,
     35.00,
+    'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=80',
     8.00,
     'Smart Interior',
     'ACTIVE'
 ),
 (
+    @admin_id,
     @tu_quan_ao_id,
     'Tủ quần áo gỗ công nghiệp',
     'tu-quan-ao-go-cong-nghiep',
@@ -158,14 +176,17 @@ INSERT INTO products (
     'Gỗ công nghiệp MDF',
     'Vân gỗ sáng',
     'Modern',
+    'Bedroom',
     160.00,
     210.00,
     55.00,
+    'https://images.unsplash.com/photo-1594026112284-02bb6f3352fe?auto=format&fit=crop&w=900&q=80',
     70.00,
     'Smart Interior',
     'ACTIVE'
 )
 ON DUPLICATE KEY UPDATE
+    seller_id = VALUES(seller_id),
     category_id = VALUES(category_id),
     name = VALUES(name),
     description = VALUES(description),
@@ -176,9 +197,11 @@ ON DUPLICATE KEY UPDATE
     material = VALUES(material),
     color = VALUES(color),
     style = VALUES(style),
+    room_type = VALUES(room_type),
     width = VALUES(width),
     height = VALUES(height),
     depth = VALUES(depth),
+    image_url = VALUES(image_url),
     weight = VALUES(weight),
     brand = VALUES(brand),
     status = VALUES(status);

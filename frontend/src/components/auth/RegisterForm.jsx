@@ -20,22 +20,22 @@ function RegisterForm({
     <form className="auth-form-content fade-in" onSubmit={onSubmit}>
       <div className="auth-card-header">
         <p className="eyebrow">Smart Interior</p>
-        <h1>Tạo tài khoản mới</h1>
+        <h1>Create account</h1>
         <p className="login-subtitle">
-          Bắt đầu lưu ý tưởng và khám phá sản phẩm nội thất phù hợp với bạn.
+          Start buying and selling furniture through the shop.
         </p>
       </div>
 
       <div className="register-form-grid">
         <div className="form-group">
-          <label htmlFor="registerUsername">Tên đăng nhập</label>
+          <label htmlFor="registerUsername">Full name</label>
           <input
             id="registerUsername"
             ref={usernameInputRef}
             type="text"
             value={username}
             onChange={(event) => onUsernameChange(event.target.value)}
-            placeholder="Nhập tên đăng nhập"
+            placeholder="Enter your full name"
           />
         </div>
 
@@ -46,29 +46,29 @@ function RegisterForm({
             type="email"
             value={email}
             onChange={(event) => onEmailChange(event.target.value)}
-            placeholder="Nhập email"
+            placeholder="Enter your email"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="registerPassword">Mật khẩu</label>
+          <label htmlFor="registerPassword">Password</label>
           <input
             id="registerPassword"
             type="password"
             value={password}
             onChange={(event) => onPasswordChange(event.target.value)}
-            placeholder="Nhập mật khẩu"
+            placeholder="Enter your password"
           />
         </div>
 
         <div className="form-group">
-          <label htmlFor="confirmPassword">Xác nhận mật khẩu</label>
+          <label htmlFor="confirmPassword">Confirm password</label>
           <input
             id="confirmPassword"
             type="password"
             value={confirmPassword}
             onChange={(event) => onConfirmPasswordChange(event.target.value)}
-            placeholder="Nhập lại mật khẩu"
+            placeholder="Re-enter your password"
           />
         </div>
       </div>
@@ -77,12 +77,12 @@ function RegisterForm({
       {success && <p className="success-text auth-feedback">{success}</p>}
 
       <Button className="full-width" type="submit" disabled={loading}>
-        {loading ? "Đang tạo tài khoản..." : "Tạo tài khoản"}
+        {loading ? "Creating account..." : "Create account"}
       </Button>
 
       <div className="auth-mode-links">
         <button type="button" onClick={() => onSwitchMode("login")} disabled={loading}>
-          Đã có tài khoản? Đăng nhập
+          Already have an account? Sign in
         </button>
       </div>
     </form>

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import ForgotPasswordForm from "./ForgotPasswordForm.jsx";
 import LoginForm from "./LoginForm.jsx";
 import RegisterForm from "./RegisterForm.jsx";
+import { clearSession, saveSession } from "../../services/apiClient.js";
+import { login, register } from "../../services/authService.js";
 
 function AuthForm({ authMode = "login", onAuthModeChange, onLogin, fromHero, returnTo = "/" }) {
   const [username, setUsername] = useState("");
@@ -43,18 +45,22 @@ function AuthForm({ authMode = "login", onAuthModeChange, onLogin, fromHero, ret
     setConfirmPassword("");
   }
 
-  function runWithDelay(callback, delay = 800) {
+  async function runRequest(callback) {
     setLoading(true);
     clearFeedback();
 
-    setTimeout(() => {
-      const nextRoute = callback();
+    try {
+      const nextRoute = await callback();
       setLoading(false);
 
       if (nextRoute) {
         navigate(nextRoute);
       }
-    }, delay);
+    } catch (requestError) {
+      clearSession();
+      setLoading(false);
+      setError(requestError.message || "Request failed.");
+    }
   }
 
   function getSafeReturnPath() {
@@ -72,16 +78,17 @@ function AuthForm({ authMode = "login", onAuthModeChange, onLogin, fromHero, ret
       return;
     }
 
-    runWithDelay(() => {
-      const trimmedUsername = username.trim();
+    runRequest(async () => {
+      const trimmedEmail = username.trim();
 
-      if (!trimmedUsername || !password) {
-        setError("Vui lòng nhập đầy đủ thông tin.");
+      if (!trimmedEmail || !password) {
+        setError("Please enter your email and password.");
         return;
       }
 
-      console.log("Mock login:", { username: trimmedUsername });
-      onLogin(trimmedUsername);
+      const response = await login(trimmedEmail, password);
+      saveSession(response.accessToken, response.user);
+      onLogin(response.user);
       return getSafeReturnPath();
     });
   }
@@ -93,29 +100,30 @@ function AuthForm({ authMode = "login", onAuthModeChange, onLogin, fromHero, ret
       return;
     }
 
-    runWithDelay(() => {
+    runRequest(async () => {
       const trimmedUsername = username.trim();
       const trimmedEmail = email.trim();
 
       if (!trimmedUsername || !trimmedEmail || !password) {
-        setError("Vui lòng nhập đầy đủ thông tin đăng ký.");
+        setError("Please enter all required registration fields.");
         return;
       }
 
       if (password !== confirmPassword) {
-        setError("Mật khẩu xác nhận không khớp.");
+        setError("Password confirmation does not match.");
         return;
       }
 
-      console.log("Mock register:", {
-        username: trimmedUsername,
+      await register({
+        fullName: trimmedUsername,
         email: trimmedEmail,
+        password,
       });
-      setUsername(trimmedUsername);
+      setUsername(trimmedEmail);
       onAuthModeChange("login");
       setPassword("");
       setConfirmPassword("");
-      setSuccess("Tạo tài khoản thành công. Vui lòng đăng nhập.");
+      setSuccess("Account created successfully. Please sign in.");
     });
   }
 
@@ -126,14 +134,13 @@ function AuthForm({ authMode = "login", onAuthModeChange, onLogin, fromHero, ret
       return;
     }
 
-    runWithDelay(() => {
+    runRequest(async () => {
       if (!email.trim()) {
-        setError("Vui lòng nhập email.");
+        setError("Please enter your email.");
         return;
       }
 
-      console.log("Mock forgot password:", { email: email.trim() });
-      setSuccess("Nếu email tồn tại, hướng dẫn sẽ được gửi đến bạn.");
+      setSuccess("Password reset is not enabled in this demo.");
     });
   }
 

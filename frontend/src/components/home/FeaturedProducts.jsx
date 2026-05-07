@@ -1,8 +1,35 @@
+import { useEffect, useState } from "react";
 import ProductCard from "../product/ProductCard.jsx";
 import { getProducts } from "../../services/productService.js";
 
 function FeaturedProducts() {
-  const featuredProducts = getProducts().slice(0, 3);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function loadFeaturedProducts() {
+      try {
+        const data = await getProducts({ page: 0, size: 3, sort: "newest" });
+        if (!ignore) {
+          setFeaturedProducts(data.items || []);
+        }
+      } catch {
+        if (!ignore) {
+          setFeaturedProducts([]);
+        }
+      }
+    }
+
+    loadFeaturedProducts();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  if (!featuredProducts.length) {
+    return null;
+  }
 
   return (
     <section className="landing-section featured-section fade-in" style={{ animationDelay: "0.08s" }}>
