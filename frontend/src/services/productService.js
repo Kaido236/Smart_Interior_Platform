@@ -1,12 +1,25 @@
-import mockProducts from "../data/mockProducts.js";
+import apiClient from "./apiClient.js";
 
-// These functions can later call a real backend API.
-export function getProducts() {
-  return mockProducts;
+export function getProducts(params = {}) {
+  return apiClient.get("/products", params);
 }
 
 export function getProductById(productId) {
-  const id = Number(productId);
+  return apiClient.get(`/products/${productId}`);
+}
 
-  return mockProducts.find((product) => product.id === id);
+export function createProduct(payload) {
+  return apiClient.post("/products", payload);
+}
+
+export function updateProduct(productId, payload) {
+  return apiClient.put(`/products/${productId}`, payload);
+}
+
+export function deleteProduct(productId) {
+  return apiClient.delete(`/products/${productId}`);
+}
+
+export function getMyProducts() {
+  return apiClient.get("/products/my");
 }

@@ -22,7 +22,7 @@ function BellIcon() {
 function Navbar({ user, onLogout }) {
   const location = useLocation();
   const isHomePage = location.pathname === "/";
-  const displayName = user?.displayName || user?.username;
+  const displayName = user?.fullName || user?.displayName || user?.email || user?.username;
 
   return (
     <header className={isHomePage ? "navbar navbar-overlay" : "navbar navbar-solid"}>
@@ -35,6 +35,15 @@ function Navbar({ user, onLogout }) {
           <NavLink className="nav-link" to="/products">
             Shop
           </NavLink>
+          <NavLink className="nav-link" to="/products/sell">
+            Sell
+          </NavLink>
+          <NavLink className="nav-link" to="/products/my">
+            My Products
+          </NavLink>
+          <NavLink className="nav-link" to="/orders">
+            Orders
+          </NavLink>
           <NavLink className="nav-link" to="/community">
             Community
           </NavLink>
@@ -44,9 +53,9 @@ function Navbar({ user, onLogout }) {
         </nav>
 
         <div className="nav-actions" aria-label="User actions">
-          <button className="nav-icon-button" type="button" aria-label="Cart">
+          <NavLink className="nav-icon-button" to="/cart" aria-label="Cart">
             <CartIcon />
-          </button>
+          </NavLink>
           <button className="nav-icon-button" type="button" aria-label="Notifications">
             <BellIcon />
           </button>
@@ -59,7 +68,7 @@ function Navbar({ user, onLogout }) {
             </div>
           ) : (
             <NavLink className="auth-link auth-login" to="/login">
-              Đăng nhập
+              Login
             </NavLink>
           )}
           <button className="language-button" type="button">

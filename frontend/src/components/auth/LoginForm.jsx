@@ -16,32 +16,32 @@ function LoginForm({
     <form className="auth-form-content fade-in" onSubmit={onSubmit}>
       <div className="auth-card-header">
         <p className="eyebrow">Smart Interior</p>
-        <h1>Chào mừng trở lại</h1>
+        <h1>Welcome back</h1>
         <p className="login-subtitle">
-          Đăng nhập để tiếp tục khám phá không gian nội thất của bạn.
+          Sign in to buy, sell, and manage your furniture orders.
         </p>
       </div>
 
       <div className="form-group">
-        <label htmlFor="username">Tên đăng nhập</label>
+        <label htmlFor="username">Email</label>
         <input
           id="username"
           ref={usernameInputRef}
-          type="text"
+          type="email"
           value={username}
           onChange={(event) => onUsernameChange(event.target.value)}
-          placeholder="Nhập tên đăng nhập"
+          placeholder="Enter your email"
         />
       </div>
 
       <div className="form-group">
-        <label htmlFor="password">Mật khẩu</label>
+        <label htmlFor="password">Password</label>
         <input
           id="password"
           type="password"
           value={password}
           onChange={(event) => onPasswordChange(event.target.value)}
-          placeholder="Nhập mật khẩu"
+          placeholder="Enter your password"
         />
       </div>
 
@@ -49,15 +49,15 @@ function LoginForm({
       {success && <p className="success-text auth-feedback">{success}</p>}
 
       <Button className="full-width" type="submit" disabled={loading}>
-        {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+        {loading ? "Signing in..." : "Sign in"}
       </Button>
 
       <div className="auth-mode-links">
         <button type="button" onClick={() => onSwitchMode("register")} disabled={loading}>
-          Chưa có tài khoản? Tạo tài khoản
+          Need an account? Create one
         </button>
         <button type="button" onClick={() => onSwitchMode("forgot")} disabled={loading}>
-          Quên mật khẩu?
+          Forgot password?
         </button>
       </div>
     </form>
