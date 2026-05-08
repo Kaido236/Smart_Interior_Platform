@@ -10,8 +10,10 @@ import com.smartinterior.platform.user.User;
 import com.smartinterior.platform.user.UserRepository;
 import com.smartinterior.platform.user.UserRole;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
 import java.math.BigDecimal;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.springframework.data.domain.Page;
@@ -182,51 +184,59 @@ public class ProductService {
     private Specification<Product> buildSpecification(ProductSearchRequest request) {
         return (root, query, criteriaBuilder) -> {
             query.distinct(true);
+            List<Predicate> predicates = new ArrayList<>();
+            var categoryJoin = root.join("category", JoinType.LEFT);
 
-            Specification<Product> spec = Specification.where((productRoot, productQuery, cb) ->
-                    cb.equal(productRoot.get("status"), ProductStatus.ACTIVE));
+            predicates.add(criteriaBuilder.equal(root.get("status"), ProductStatus.ACTIVE));
 
             String keyword = normalizeNullable(request.keyword());
             if (keyword != null) {
                 String likeKeyword = "%" + keyword.toLowerCase(Locale.ROOT) + "%";
-                spec = spec.and((productRoot, productQuery, cb) -> cb.or(
-                        cb.like(cb.lower(productRoot.get("name")), likeKeyword),
-                        cb.like(cb.lower(productRoot.get("description")), likeKeyword)
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), likeKeyword),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), likeKeyword),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("slug")), likeKeyword),
+                        criteriaBuilder.like(criteriaBuilder.lower(categoryJoin.get("name")), likeKeyword),
+                        criteriaBuilder.like(criteriaBuilder.lower(categoryJoin.get("slug")), likeKeyword)
                 ));
             }
 
             String category = normalizeNullable(request.category());
             if (category != null) {
                 String likeCategory = "%" + category.toLowerCase(Locale.ROOT) + "%";
-                spec = spec.and((productRoot, productQuery, cb) ->
-                        cb.like(cb.lower(productRoot.join("category", JoinType.LEFT).get("name")), likeCategory));
+                predicates.add(criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(categoryJoin.get("name")), likeCategory),
+                        criteriaBuilder.like(criteriaBuilder.lower(categoryJoin.get("slug")), likeCategory)
+                ));
             }
 
             String roomType = normalizeNullable(request.roomType());
             if (roomType != null) {
-                spec = spec.and((productRoot, productQuery, cb) ->
-                        cb.equal(cb.lower(productRoot.get("roomType")), roomType.toLowerCase(Locale.ROOT)));
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("roomType")),
+                        "%" + roomType.toLowerCase(Locale.ROOT) + "%"
+                ));
             }
 
             String style = normalizeNullable(request.style());
             if (style != null) {
-                spec = spec.and((productRoot, productQuery, cb) ->
-                        cb.equal(cb.lower(productRoot.get("style")), style.toLowerCase(Locale.ROOT)));
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("style")),
+                        "%" + style.toLowerCase(Locale.ROOT) + "%"
+                ));
             }
 
             BigDecimal minPrice = request.minPrice();
             if (minPrice != null) {
-                spec = spec.and((productRoot, productQuery, cb) ->
-                        cb.greaterThanOrEqualTo(productRoot.get("price"), minPrice));
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("price"), minPrice));
             }
 
             BigDecimal maxPrice = request.maxPrice();
             if (maxPrice != null) {
-                spec = spec.and((productRoot, productQuery, cb) ->
-                        cb.lessThanOrEqualTo(productRoot.get("price"), maxPrice));
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("price"), maxPrice));
             }
 
-            return spec.toPredicate(root, query, criteriaBuilder);
+            return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
         };
     }
 
